@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velo — Ship faster, together</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#060612;--surface:#0d0d20;--surface2:#13132a;--accent:#7c6dfa;--accent2:#38c5f5;--lime:#aaee44;--ink:#fff;--mid:rgba(255,255,255,0.45);--border:rgba(255,255,255,0.07);}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");}
+.glow{position:fixed;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(124,109,250,0.12) 0%,transparent 70%);pointer-events:none;z-index:0;top:-200px;left:50%;transform:translateX(-50%);}
+body>*:not(.noise):not(.glow){position:relative;z-index:1;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(6,6,18,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.logo{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:13px;color:var(--mid);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{background:var(--accent);color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;transition:opacity .2s;}
+.nav-cta:hover{opacity:0.85;}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 60px 80px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid rgba(124,109,250,0.3);border-radius:100px;font-size:12px;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:32px;background:rgba(124,109,250,0.06);}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+h1{font-size:clamp(42px,7vw,88px);font-weight:700;line-height:1.0;letter-spacing:-0.03em;margin-bottom:28px;max-width:900px;}
+h1 .grad{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:18px;color:var(--mid);line-height:1.7;max-width:540px;margin:0 auto 48px;}
+.hero-form{display:flex;gap:8px;max-width:460px;width:100%;margin:0 auto 20px;}
+.hero-form input{flex:1;padding:14px 20px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;}
+.hero-form input:focus{border-color:rgba(124,109,250,0.5);}
+.hero-form input::placeholder{color:rgba(255,255,255,0.25);}
+.hero-form button{padding:14px 24px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity .2s;}
+.hero-form button:hover{opacity:0.85;}
+.hero-social{font-size:12px;color:rgba(255,255,255,0.25);display:flex;align-items:center;gap:8px;justify-content:center;}
+.hero-social strong{color:rgba(255,255,255,0.5);}
+.hero-demo{margin-top:72px;width:100%;max-width:900px;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 0 80px rgba(124,109,250,0.1);}
+.demo-bar{background:var(--surface2);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);}
+.demo-dot{width:10px;height:10px;border-radius:50%;}
+.demo-url{flex:1;background:rgba(255,255,255,0.05);border-radius:6px;height:22px;margin:0 16px;}
+.demo-screen{background:var(--surface);padding:28px;display:grid;grid-template-columns:200px 1fr;gap:16px;height:320px;}
+.demo-sidebar{background:rgba(255,255,255,0.03);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;}
+.demo-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.demo-logo-sq{width:24px;height:24px;background:var(--accent);border-radius:6px;}
+.demo-logo-txt{width:50px;height:8px;background:rgba(255,255,255,0.3);border-radius:3px;}
+.demo-nav-item{height:28px;border-radius:6px;display:flex;align-items:center;padding:0 10px;gap:8px;}
+.demo-nav-item.active{background:rgba(124,109,250,0.2);}
+.demo-nav-dot{width:8px;height:8px;border-radius:2px;background:rgba(255,255,255,0.15);}
+.demo-nav-dot.active{background:var(--accent);}
+.demo-nav-lbl{height:6px;border-radius:2px;background:rgba(255,255,255,0.1);}
+.demo-nav-lbl.active{background:rgba(124,109,250,0.6);}
+.demo-main{display:flex;flex-direction:column;gap:14px;overflow:hidden;}
+.demo-topbar{display:flex;justify-content:space-between;align-items:center;}
+.demo-page-title{height:10px;width:80px;background:rgba(255,255,255,0.3);border-radius:3px;}
+.demo-topbar-right{display:flex;gap:8px;}
+.demo-topbar-btn{height:26px;border-radius:6px;background:var(--accent);padding:0 12px;display:flex;align-items:center;justify-content:center;}
+.demo-topbar-btn2{height:26px;border-radius:6px;background:rgba(255,255,255,0.06);width:26px;}
+.demo-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.demo-kpi{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:14px;}
+.demo-kpi-val{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;}
+.demo-kpi-lbl{font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.05em;}
+.demo-kpi-chg{font-size:9px;color:var(--lime);margin-top:4px;}
+.demo-kpi.v{border-color:rgba(124,109,250,0.3);}.demo-kpi.l{border-color:rgba(170,238,68,0.2);}
+.demo-chart{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:14px;flex:1;display:flex;flex-direction:column;}
+.demo-chart-label{font-size:9px;color:rgba(255,255,255,0.3);margin-bottom:10px;}
+.demo-chart-bars{display:flex;gap:5px;align-items:flex-end;flex:1;}
+.demo-b{flex:1;border-radius:3px 3px 0 0;background:rgba(124,109,250,0.25);}
+.demo-b.hi{background:var(--accent);}
+.features{padding:100px 60px;}
+.features-header{text-align:center;margin-bottom:80px;}
+.features-header .sec-label{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:16px;}
+.features-header h2{font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-0.02em;}
+.features-header p{font-size:16px;color:var(--mid);max-width:480px;margin:16px auto 0;line-height:1.7;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.feat{padding:40px 36px;background:var(--surface);border:1px solid var(--border);transition:background .3s,border-color .3s;}
+.feat:hover{background:var(--surface2);border-color:rgba(124,109,250,0.2);}
+.feat-icon{width:40px;height:40px;border-radius:10px;background:rgba(124,109,250,0.12);border:1px solid rgba(124,109,250,0.2);display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
+.feat-icon svg{color:var(--accent);}
+.feat-title{font-size:17px;font-weight:500;color:#fff;margin-bottom:12px;}
+.feat-desc{font-size:14px;color:var(--mid);line-height:1.7;}
+.pricing{padding:100px 60px;text-align:center;border-top:1px solid var(--border);}
+.pricing h2{font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-0.02em;margin-bottom:16px;}
+.pricing p{font-size:16px;color:var(--mid);margin-bottom:64px;}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;}
+.price-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px 32px;text-align:left;transition:border-color .3s;}
+.price-card:hover{border-color:rgba(124,109,250,0.3);}
+.price-card.pop{background:var(--accent);border-color:var(--accent);position:relative;}
+.pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--lime);color:#111;font-size:11px;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap;}
+.pc-name{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:12px;font-family:'DM Mono',monospace;}
+.price-card.pop .pc-name{color:rgba(255,255,255,0.6);}
+.pc-price{font-size:44px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;}
+.pc-per{font-size:13px;color:var(--mid);margin-bottom:28px;}
+.price-card.pop .pc-per{color:rgba(255,255,255,0.5);}
+.pc-list{list-style:none;margin-bottom:32px;}
+.pc-list li{font-size:14px;color:var(--mid);padding:9px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;}
+.price-card.pop .pc-list li{color:rgba(255,255,255,0.8);border-bottom-color:rgba(255,255,255,0.1);}
+.pc-list li::before{content:'✓';color:var(--accent);font-size:12px;}
+.price-card.pop .pc-list li::before{color:var(--lime);}
+.pc-btn{display:block;text-align:center;padding:13px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--border);color:var(--ink);transition:all .2s;}
+.pc-btn:hover{background:rgba(255,255,255,0.06);}
+.price-card.pop .pc-btn{background:#fff;color:var(--accent);border-color:#fff;}
+.price-card.pop .pc-btn:hover{background:var(--lime);color:#111;border-color:var(--lime);}
+.cta-band{margin:0 60px 100px;background:linear-gradient(135deg,rgba(124,109,250,0.15),rgba(56,197,245,0.1));border:1px solid rgba(124,109,250,0.2);border-radius:20px;padding:80px 60px;text-align:center;}
+.cta-band h2{font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-0.02em;margin-bottom:16px;}
+.cta-band p{font-size:16px;color:var(--mid);margin-bottom:36px;}
+.cta-btns{display:flex;gap:12px;justify-content:center;}
+.btn-white{background:#fff;color:#111;padding:14px 32px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;transition:opacity .2s;}
+.btn-white:hover{opacity:0.9;}
+.btn-ghost{border:1px solid rgba(255,255,255,0.2);color:#fff;padding:14px 32px;border-radius:8px;font-size:14px;text-decoration:none;transition:border-color .2s;}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.5);}
+footer{padding:32px 60px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);}
+.fl{font-family:'DM Mono',monospace;font-size:16px;display:flex;align-items:center;gap:8px;text-decoration:none;color:#fff;}
+.fcopy{font-size:12px;color:rgba(255,255,255,0.25);}
+.fi{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s;}
+.fi.in{opacity:1;transform:none;}
+@media(max-width:900px){
+  nav{padding:18px 24px;}.nav-links{display:none;}
+  .hero{padding:120px 24px 60px;}
+  .hero-form{flex-direction:column;}
+  .features,.pricing{padding:60px 24px;}
+  .feat-grid,.price-grid{grid-template-columns:1fr;}
+  .cta-band{margin:0 24px 60px;padding:48px 24px;}
+  .cta-btns{flex-direction:column;align-items:center;}
+  footer{flex-direction:column;gap:12px;padding:24px;}
+  .demo-screen{grid-template-columns:1fr;}.demo-sidebar{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="glow"></div>
+
+<nav>
+  <a href="#" class="logo"><div class="logo-dot"></div>Velo</a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#cta">Docs</a></li>
+  </ul>
+  <a href="#waitlist" class="nav-cta">Get early access</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge"><div class="badge-dot"></div>Now in beta · 1,200+ teams on the waitlist</div>
+  <h1>Ship faster.<br>Break <span class="grad">nothing.</span></h1>
+  <p class="hero-sub">Velo is the deployment platform that gives your team real-time visibility, instant rollbacks, and automated previews — without the DevOps headache.</p>
+  <div class="hero-form" id="waitlist">
+    <input type="email" placeholder="Enter your work email">
+    <button>Join waitlist</button>
+  </div>
+  <div class="hero-social"><strong>1,247 teams</strong> already signed up · No credit card required</div>
+  <div class="hero-demo fi">
+    <div class="demo-bar">
+      <div class="demo-dot" style="background:#ff5f57"></div>
+      <div class="demo-dot" style="background:#febc2e"></div>
+      <div class="demo-dot" style="background:#28c840"></div>
+      <div class="demo-url"></div>
+    </div>
+    <div class="demo-screen">
+      <div class="demo-sidebar">
+        <div class="demo-logo-row"><div class="demo-logo-sq"></div><div class="demo-logo-txt"></div></div>
+        <div class="demo-nav-item active"><div class="demo-nav-dot active"></div><div class="demo-nav-lbl active" style="width:55px"></div></div>
+        <div class="demo-nav-item"><div class="demo-nav-dot"></div><div class="demo-nav-lbl" style="width:45px"></div></div>
+        <div class="demo-nav-item"><div class="demo-nav-dot"></div><div class="demo-nav-lbl" style="width:65px"></div></div>
+        <div class="demo-nav-item"><div class="demo-nav-dot"></div><div class="demo-nav-lbl" style="width:40px"></div></div>
+      </div>
+      <div class="demo-main">
+        <div class="demo-topbar">
+          <div class="demo-page-title"></div>
+          <div class="demo-topbar-right"><div class="demo-topbar-btn2"></div><div class="demo-topbar-btn"></div></div>
+        </div>
+        <div class="demo-kpis">
+          <div class="demo-kpi v"><div class="demo-kpi-val">142</div><div class="demo-kpi-lbl">DEPLOYMENTS</div><div class="demo-kpi-chg">+12 today</div></div>
+          <div class="demo-kpi l"><div class="demo-kpi-val">99.9%</div><div class="demo-kpi-lbl">UPTIME</div><div class="demo-kpi-chg">Last 30 days</div></div>
+          <div class="demo-kpi"><div class="demo-kpi-val">1.2s</div><div class="demo-kpi-lbl">AVG BUILD</div><div class="demo-kpi-chg" style="color:#38c5f5">-0.3s</div></div>
+        </div>
+        <div class="demo-chart">
+          <div class="demo-chart-label">DEPLOYMENT ACTIVITY</div>
+          <div class="demo-chart-bars">
+            <div class="demo-b" style="height:40%"></div>
+            <div class="demo-b" style="height:65%"></div>
+            <div class="demo-b" style="height:50%"></div>
+            <div class="demo-b" style="height:80%"></div>
+            <div class="demo-b" style="height:55%"></div>
+            <div class="demo-b" style="height:90%"></div>
+            <div class="demo-b hi" style="height:100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="features-header fi">
+    <div class="sec-label">Features</div>
+    <h2>Everything your team needs<br>to ship with confidence</h2>
+    <p>Built for modern engineering teams who care about speed, reliability, and sleep.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat fi">
+      <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div class="feat-title">Instant deployments</div>
+      <div class="feat-desc">Push to ship. Velo builds and deploys in under 2 seconds for most projects. No waiting around.</div>
+    </div>
+    <div class="feat fi">
+      <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="feat-title">Preview environments</div>
+      <div class="feat-desc">Every PR gets its own live preview URL. Share with stakeholders before merging — no surprises.</div>
+    </div>
+    <div class="feat fi">
+      <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div>
+      <div class="feat-title">One-click rollbacks</div>
+      <div class="feat-desc">Something broke in production? Roll back to any previous deployment in one click. Instant.</div>
+    </div>
+    <div class="feat fi">
+      <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+      <div class="feat-title">Real-time monitoring</div>
+      <div class="feat-desc">Live logs, error tracking, and performance metrics in one dashboard. Know before your users do.</div>
+    </div>
+    <div class="feat fi">
+      <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      <div class="feat-title">Secrets management</div>
+      <div class="feat-desc">Securely store and inject environment variables per deployment. Encrypted at rest, never exposed in logs.</div>
+    </div>
+    <div class="feat fi">
+      <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg></div>
+      <div class="feat-title">Git-native workflow</div>
+      <div class="feat-desc">Connects to GitHub, GitLab, and Bitbucket. Deploys automatically when you push. Works with your existing flow.</div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <h2>Simple, honest pricing</h2>
+  <p>No hidden fees. No surprise bills. Scale as you grow.</p>
+  <div class="price-grid">
+    <div class="price-card fi">
+      <div class="pc-name">Hobby</div>
+      <div class="pc-price">$0</div>
+      <div class="pc-per">forever free</div>
+      <ul class="pc-list"><li>3 projects</li><li>100 deployments/mo</li><li>Community support</li><li>Preview environments</li></ul>
+      <a href="#" class="pc-btn">Get started free</a>
+    </div>
+    <div class="price-card pop fi">
+      <div class="pop-badge">Most popular</div>
+      <div class="pc-name">Pro</div>
+      <div class="pc-price">$29</div>
+      <div class="pc-per">per month</div>
+      <ul class="pc-list"><li>Unlimited projects</li><li>Unlimited deployments</li><li>Priority support</li><li>Custom domains</li><li>Advanced analytics</li></ul>
+      <a href="#" class="pc-btn">Start free trial</a>
+    </div>
+    <div class="price-card fi">
+      <div class="pc-name">Team</div>
+      <div class="pc-price">$99</div>
+      <div class="pc-per">per month</div>
+      <ul class="pc-list"><li>Everything in Pro</li><li>10 team members</li><li>SSO & permissions</li><li>Audit logs</li><li>SLA guarantee</li></ul>
+      <a href="#" class="pc-btn">Contact sales</a>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band fi" id="cta">
+  <h2>Ready to ship faster?</h2>
+  <p>Join 1,247 teams already on the waitlist. Early access opens next month.</p>
+  <div class="cta-btns">
+    <a href="#waitlist" class="btn-white">Join the waitlist</a>
+    <a href="#features" class="btn-ghost">See all features</a>
+  </div>
+</div>
+
+<footer>
+  <a href="#" class="fl"><div class="logo-dot"></div>Velo</a>
+  <span class="fcopy">© 2026 Velo Technologies Inc.</span>
+</footer>
+
+<script>
+var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');obs.unobserve(x.target);}});},{threshold:0.1});
+document.querySelectorAll('.fi').forEach(function(el){obs.observe(el);});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+</script>
+</body>
+</html>
