@@ -14,7 +14,7 @@ A high-converting dark-mode landing page for a fictional SaaS deployment platfor
 
 ## About
 
-Velo is a concept landing page designed for a B2B SaaS product targeting engineering teams. The goal was to communicate trust, speed, and simplicity — the three things that matter most to developers evaluating a new tool. The dark aesthetic, bold typography, and live dashboard mockup all serve that goal.
+Velo is a concept landing page designed for a B2B SaaS product targeting engineering teams. The goal was to communicate trust, speed, and simplicity, the three things that matter most to developers evaluating a new tool. The dark aesthetic, bold typography, and live dashboard mockup all serve that goal.
 
 ---
 
